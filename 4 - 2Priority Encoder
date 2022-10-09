@@ -1,0 +1,15 @@
+module priority_encoder(D,C,V);
+
+//C1=(D0'D0')+D2+D3
+//C0=D3+D2'D1
+//V=D3+D2+D1+D0
+
+input [3:0]D;
+output [1:0]C;
+output V;
+
+assign C[1]=~(D[0])&~(D[1])|D[2]|D[3];
+assign C[0]=D[3]|~(D[2])&D[1];
+assign V=D[3]|D[2]|D[1]|D[0];
+
+endmodule
