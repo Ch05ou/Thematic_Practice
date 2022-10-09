@@ -1,0 +1,21 @@
+module bits_multiplier(X,Y,C);
+
+input [1:0]X,Y;
+output [3:0]C;
+wire wU1s;
+
+HA U1(.A(X[1]&Y[0]),.B(X[0]&Y[1]),.S(C[1]),.C(wU1s));
+HA U2(.A(wU1s),.B(X[1]&Y[1]),.S(C[2]),.C(C[3]));
+and W3(C[0],X[0],Y[0]);
+
+endmodule
+
+module HA(A,B,S,C);
+
+input A,B;
+output S,C;
+
+xor Sum(S,A,B);
+and carry(C,A,B);
+
+endmodule
