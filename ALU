@@ -1,0 +1,27 @@
+module ALU(A,B,sel,alu);
+
+input [4:0]A;
+input [3:0]B;
+input [2:0]sel;
+output reg[6:0]alu;
+integer i;
+always@(sel)
+	begin
+		case(sel)
+			3'b000:alu=B;
+			3'b001:alu=~(A&B);
+			3'b010:alu=A|B;
+			3'b011:alu=~B+4'b0001;
+			3'b100:alu=A+B;
+			3'b101:alu=A-B;
+			3'b110:alu=A>B? A:B;
+			3'b111:
+				begin
+				alu=7'b0+A;
+				for(i=0;i<B;i=i+1)
+					alu={alu[6:0],alu[6]};
+				end
+		endcase
+	end
+
+endmodule
