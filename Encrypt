@@ -1,0 +1,41 @@
+module Encrypt(plain,key,cypher);
+
+input [31:0]plain;
+input [3:0]key;
+reg[31:0]data2,data1;
+reg [7:0]key8bits;
+output reg [31:0]cypher;
+integer i,n,j,m;
+
+always@(key or plain)
+	begin
+		for(n=0;n<8;n=n+1)
+			begin
+				j=3;
+				for(i=4*n;i<n*4+4;i=i+1)
+					begin
+						data1[4*n+j]=plain[i]^key[j];
+						j=j-1;
+					end
+			end
+		key8bits={key,4'b0101}^{4'b1010,key};
+		for(n=0;n<4;n=n+1)
+			begin
+				j=7;
+				for(i=8*n;i<n*8+8;i=i+1)
+					begin
+						data2[8*n+j]=data1[i]^key8bits[j];
+						j=j-1;
+					end
+			end
+
+		for(n=3,m=0;n>=0 && m<4;n=n-1,m=m+1)
+			begin
+				for(i=7;i>=0;i=i-1)
+					begin
+						cypher[8*n+i]=data2[8*m+i];
+					end
+			end
+	end
+
+endmodule
