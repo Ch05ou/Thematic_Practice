@@ -1,0 +1,118 @@
+module BubbleSort(clk,res,in1,in2,in3,in4,in5,in6,in7,in8,out1,out2,out3,out4,out5,out6,out7,out8);
+
+input clk,res;
+input [5:0]in1,in2,in3,in4,in5,in6,in7,in8;
+output reg[5:0]out1,out2,out3,out4,out5,out6,out7,out8;
+reg load=0;
+integer counter;
+
+always@(posedge clk)
+	begin
+		if(res==1)
+			begin
+				counter<=0;
+				out1=0;
+				out2=0;
+				out3=0;
+				out4=0;
+				out5=0;
+				out6=0;
+				out7=0;
+				out8=0;
+				load=1;
+			end
+		else if(load==1)
+			begin
+				load=0;
+				out1=in1;
+				out2=in2;
+				out3=in3;
+				out4=in4;
+				out5=in5;
+				out6=in6;
+				out7=in7;
+				out8=in8;
+			end
+		else
+			begin
+				if(counter%2==0)
+					begin
+						if(out2[5]>out1[5])
+							begin
+								out2<=out1;
+								out1<=out2;
+							end
+						if(out2[5]==out1[5] && out2[4:0]<out1[4:0])
+							begin
+								out2<=out1;
+								out1<=out2;
+							end
+						if(out4[5]>out3[5])
+							begin
+								out4<=out3;
+								out3<=out4;
+							end
+						if(out4[5]==out3[5] && out4[4:0]<out3[4:0])
+							begin
+								out4<=out3;
+								out3<=out4;
+							end
+						if(out6[5]>out5[5])
+							begin
+								out6<=out5;
+								out5<=out6;
+							end
+						if(out6[5]==out5[5] && out6[4:0]<out5[4:0])
+							begin
+								out6<=out5;
+								out5<=out6;
+							end
+						if(out8[5]>out7[5])
+							begin
+								out8<=out7;
+								out7<=out8;
+							end
+						if(out8[5]==out7[5] && out8[4:0]<out7[4:0])
+							begin
+								out8<=out7;
+								out7<=out8;
+							end
+					end
+				else if(counter%2==1)
+					begin
+						if(out3[5]>out2[5])
+							begin
+								out3<=out2;
+								out2<=out3;
+							end
+						if(out3[5]==out2[5] && out3[4:0]<out2[4:0])
+							begin
+								out3<=out2;
+								out2<=out3;
+							end
+						if(out5[5]>out4[5])
+							begin
+								out5<=out4;
+								out4<=out5;
+							end
+						if(out5[5]==out4[5] && out5[4:0]<out4[4:0])
+							begin
+								out5<=out4;
+								out4<=out5;
+							end
+						if(out7[5]>out6[5])
+							begin
+								out7<=out6;
+								out6<=out7;
+							end
+						if(out7[5]==out6[5] && out7[4:0]<out6[4:0])
+							begin
+								out7<=out6;
+								out6<=out7;
+							end
+					end
+				counter=counter+1;
+			end
+	end
+
+endmodule
