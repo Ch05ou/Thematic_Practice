@@ -1,0 +1,85 @@
+module MealyMachine(clk,rst,signal,data);
+
+input clk,rst,signal;
+parameter [3:0]s0=4'b0000,s1=4'b0001,s2=4'b0010,s3=4'b0011,s4=4'b0100,s5=4'b0101,s6=4'b0110,s7=4'b0111,s8=4'b1000;
+reg [3:0]state;
+output reg data;
+
+always@(posedge clk)
+	begin
+		if(rst==1)
+			begin
+				data=0;
+				state=s0;
+			end
+		else
+			begin
+				case(state)
+					s0:
+						begin
+							if(signal==0)
+								begin state=s1; data=0; end
+							else
+								begin state=s0; data=1; end
+						end
+					s1:
+						begin
+							if(signal==0)
+								begin state=s2; data=1; end
+							else
+								begin state=s3; data=1; end
+						end
+					s2:
+						begin
+							if(signal==0)
+								begin state=s3; data=0; end
+							else
+								begin state=s1; data=0; end
+						end
+					s3:
+						begin
+							if(signal==0)
+								begin state=s2; data=0; end
+							else
+								begin state=s4; data=1; end
+						end
+					s4:
+						begin
+							if(signal==0)
+								begin state=s5; data=0; end
+							else
+								begin state=s4; data=1; end
+						end
+					s5:
+						begin
+							if(signal==0)
+								begin state=s5; data=0; end
+							else
+								begin state=s6; data=0; end
+						end
+					s6:
+						begin
+							if(signal==0)
+								begin state=s4; data=1; end
+							else
+								begin state=s7; data=0; end
+						end
+					s7:
+						begin
+							if(signal==0)
+								begin state=s7; data=1; end
+							else
+								begin state=s8; data=1; end
+						end
+					s8:
+						begin
+							if(signal==0)
+								begin state=s2; data=0; end
+							else
+								begin state=s0; data=1; end
+						end
+				endcase
+			end
+	end
+
+endmodule
