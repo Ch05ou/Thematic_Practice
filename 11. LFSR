@@ -1,0 +1,25 @@
+module LFSR(clk,rst,rnd,counter,def);
+
+input clk,rst;
+output reg[7:0]rnd,counter;
+output reg def;
+
+always@(posedge clk)
+	begin
+		if(rst==1)
+			begin rnd=8'd87; def=0; counter=0; end
+		else
+			begin
+				counter=counter+1;
+				if(counter==8'b11111111)
+					begin rnd=8'd87;def=0; counter=0;end
+				else
+					begin 
+						rnd={rnd[6:0],(rnd[3]^(rnd[4]^(rnd[7]^rnd[5])))};
+						if(counter==8'b11111110)
+							def=1;
+					end;
+			end
+	end
+
+endmodule
