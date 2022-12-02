@@ -1,0 +1,71 @@
+module SortLFSR(clk,rst,data1,data2,data3,data4,lfsr);
+
+input clk,rst;
+output reg[15:0]data1,data2,data3,data4,lfsr=15'd1101;
+reg [15:0]tmpdata1,tmpdata2,tmpdata3,tmpdata4;
+reg [15:0]data[3:0];
+integer counter,sortcounter;
+
+//lfsr={lfsr[14:0],(lfsr[3]^(lfsr[12]^(lfsr[14]^lfsr[15])))};
+
+always@(posedge clk)
+	begin
+		if(rst==1)
+			begin
+				data1=0;
+				data2=0;
+				data3=0;
+				data4=0;
+				counter=0;
+				sortcounter=0;
+				lfsr=15'd1101;
+			end
+		else
+			begin
+				if(counter%4==0)
+					begin
+						tmpdata1<=data[0];
+						tmpdata2<=data[1];
+						tmpdata3<=data[2];
+						tmpdata4<=data[3];
+						counter=0;
+					end
+				lfsr={lfsr[14:0],(lfsr[3]^(lfsr[12]^(lfsr[14]^lfsr[15])))};
+				data[counter]=lfsr;
+				counter=counter+1;
+				sortcounter=sortcounter+1;
+				if(sortcounter>3)
+					begin
+						if(sortcounter%2==0)
+							begin
+								if(tmpdata1>tmpdata2)
+									begin
+										tmpdata1<=tmpdata2;
+										tmpdata2<=tmpdata1;
+									end
+								if(tmpdata3>tmpdata4)
+									begin
+										tmpdata3<=tmpdata4;
+										tmpdata4<=tmpdata3;								
+									end
+							end
+						else if(sortcounter%2==1)
+							begin
+								if(tmpdata2>tmpdata3)
+									begin
+										tmpdata2<=tmpdata3;
+										tmpdata3<=tmpdata2;
+									end
+							end
+					end
+				if(sortcounter!=0 && sortcounter%4==1)
+					begin
+						data1=tmpdata1;
+						data2=tmpdata2;
+						data3=tmpdata3;
+						data4=tmpdata4;
+					end
+			end
+	end
+
+endmodule
