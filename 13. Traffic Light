@@ -1,0 +1,87 @@
+module TrafficLight(clk,rst,time1,time2,light1, light2);
+
+input clk, rst;
+output reg [6:0] time1, time2;
+output reg [3:0] light1, light2;
+integer counter = 0;
+
+always @(posedge clk,posedge rst)begin
+	if(rst == 1)begin
+			time1 = 7'd0;
+			time2 = 7'd55;
+			light1 = 4'b0010;
+			light2 = 4'b1000;
+			counter = 0;
+	end
+	else if(counter > 140)begin
+			time1 = 7'd0;
+			time2 = 7'd55;
+			light1 = 4'b0010;
+			light2 = 4'b1000;
+			counter = 0;
+	end
+	else begin
+			counter = counter + 1;	
+			if(counter < 35)begin
+				time1 = 7'd0;
+				light1 = 4'b0010;
+				time2 = time2 - 1;
+				light2 = 4'b1000;
+			end
+			else if(counter < 40)begin
+				time1 = 7'd0;
+				light1 = 4'b0100;
+				time2 = time2 - 1;
+				light2 = 4'b1000;
+			end
+			else if(counter < 50)begin
+				time1 = 7'd0;
+				light1 = 4'b1001;
+				time2 = time2 - 1;
+				light2 = 4'b1000;
+			end
+			else if(counter < 54)begin
+				time1 = 7'd0;
+				light1 = 4'b0100;
+				time2 = time2 - 1;
+				light2 = 4'b1000;
+			end
+			else if(counter < 55)begin
+				time1 = 7'd87;
+				light1 = 4'b1000;
+				time2 = 7'd1;
+				light2 = 4'b1000;
+			end
+			else if(counter < 106)begin
+				time1 = time1 - 1;
+				light1 = 4'b0010;
+				time2 = 7'd0;
+				light2 = 4'b0010;
+			end
+			else if(counter < 113)begin
+				time1 = time1 - 1;
+				light1 = 4'b0010;
+				time2 = 7'd0;
+				light2 = 4'b0100;
+			end
+			else if(counter < 132)begin
+				time1 = time1 - 1;
+				light1 = 4'b0010;
+				time2 = 7'd0;
+				light2 = 4'b1001;
+			end
+			else if(counter < 140)begin
+				time1 = time1 - 1;
+				light1 = 4'b0010;
+				time2 = 7'd0;
+				light2 = 4'b0100;
+			end
+			else begin
+				time1 = time1 - 1;
+				light1 = 4'b0010;
+				time2 = 7'd0;
+				light2 = 4'b1000;
+			end
+	end
+end
+endmodule
