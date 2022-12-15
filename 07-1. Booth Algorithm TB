@@ -1,0 +1,85 @@
+`timescale 1ns/10ps
+`define cycle	30
+
+module BoothAlgorithmTB;
+
+reg clk,rst;
+reg [5:0]in1,in2;
+wire [11:0]out;
+
+reg [5:0]in1_data[999:0];
+reg [5:0]in2_data[999:0];
+reg [11:0]out_data[999:0];
+
+integer counter,correct,error,c,datacounter;
+
+BoothAlgorithm bath(.clk(clk),.rst(rst),.in1(in1),.in2(in2),.out(out));
+
+initial
+	begin
+		clk=0;
+		rst = 1'b1; 
+		counter=0;
+		datacounter=0;
+		correct=0;
+		error=0;
+		in1=0;
+		in2=0;
+		c=0;
+	end
+
+initial 
+	begin
+	    $readmemb ("D:/ForQuartus/Thematic_Practice/Booth Algorithm/TestBenchData/ans.txt",out_data);
+		 $readmemb ("D:/ForQuartus/Thematic_Practice/Booth Algorithm/TestBenchData/dat1.txt",in1_data);
+		 $readmemb ("D:/ForQuartus/Thematic_Practice/Booth Algorithm/TestBenchData/dat2.txt",in2_data);
+		 $display("----------------------");
+		 $display("-- Simulation Start --");
+		 $display("----------------------");
+	end
+
+always begin #(`cycle/2) clk=~clk; end
+
+always@(posedge clk)
+	begin
+		if(rst==1)
+			begin
+				rst = 0;
+				counter=0;
+				correct=0;
+				error=0;
+				in1=0;
+				in2=0;
+			end
+		else
+			begin
+				if(counter>0 && counter%12==0)
+					begin
+						if(out==out_data[datacounter])
+							correct=correct+1;
+						else
+							error=error+1;
+						datacounter=datacounter+1;
+					end
+				in1=in1_data[datacounter];
+				in2=in2_data[datacounter];
+				counter=counter+1;
+			end
+		if(datacounter==1000)
+			begin
+				if(correct==1000)
+					begin
+						$display("PASS : %d   ERROR : %d",correct,error);
+						$display("-------------------PASS-------------------");
+						$finish;
+					end
+				else
+					begin
+						$display("PASS : %d   ERROR : %d",correct,error);
+						$finish;
+					end
+			end
+			
+	end
+	
+endmodule
