@@ -53,6 +53,10 @@ always@(posedge clk)
 								else
 									begin P=P>>1; end
 							end
+						else if(in1==0 || in2==0)
+							begin
+								P=0;
+							end
 						else
 							begin
 								if(P[12]==1)
