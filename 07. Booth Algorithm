@@ -24,7 +24,7 @@ always@(posedge clk)
 						out=P[12:1];
 						clkc=0;
 					end
-				for(counter=0;counter<7;counter=counter+1)
+				for(counter=0;counter<=7;counter=counter+1)
 					begin
 						if(counter==0)
 							begin
